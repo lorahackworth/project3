@@ -46,9 +46,15 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task o) {
-        int compareResult = Integer.valueOf(this.priority).compareTo(Integer.valueOf(o.priority));
-        if(compareResult!=0) return -compareResult;
-        return compareResult;
+        int comparePriority = Integer.compare(this.priority, o.priority);
+
+        //if priorities are different, return highest one first
+        if (comparePriority != 0) {
+            return -comparePriority; //reverse
+        } else {
+            //if priorities are equal, compare by name alphabetically
+            return this.name.compareTo(o.name);
+        }
     }
 }
 

@@ -9,6 +9,17 @@ public class Main {
     public static void main(String[] args) {
         try {
             ArrayList<Task> myTasks = new ArrayList<>();
+
+            //new task collection
+            System.out.println("Here's a list of my secret tasks...");
+            SecretTasks secretTasks = new SecretTasks();
+            secretTasks.addTask(new Task("Get Batman(my cat) food", "Get his food, pour it in the bowl", 4));
+            secretTasks.addTask(new Task("Put out the fire in the kitchen","WHAT?!", 5));
+            secretTasks.addTask(new Task("CALL THE FIRE DEPARTMENT!", "Our home is burnt now", 3));
+            secretTasks.addTask(new Task("Get eggs", "Go to the grocery store, visit the egg aisle, take a half carton of eggs, go to the checkout, run past the cashier, run through security, get in the getaway vehicle, escape the law, return home and make an omelette", 1));
+            displaySorted(secretTasks.getTasks());
+
+
             //starts the loop by allowing user to make a first choice
             System.out.println();
             System.out.println("Please choose an option: \n(1)Add a task. \n(2)Remove a task. \n(3)Update a task. \n(4)List all tasks. \n(0)Exit.");
