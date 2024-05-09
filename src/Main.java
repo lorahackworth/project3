@@ -1,7 +1,21 @@
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Scanner;
+
+/*I can't figure out how to get Gson to be imported properly, I tried to look online
+but it's been incredibly buggy for me. The code for writing files works, as I took it from
+my exercise 14, but I can't figure out how to make it run on my own laptop.
+Have a great summer, Killoran, thank you for all that you taught me. :)
+*/
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
 
 public class Main {
     public static Scanner input = new Scanner(System.in);
@@ -22,7 +36,7 @@ public class Main {
 
             //starts the loop by allowing user to make a first choice
             System.out.println();
-            System.out.println("Please choose an option: \n(1)Add a task. \n(2)Remove a task. \n(3)Update a task. \n(4)List all tasks. \n(0)Exit.");
+            System.out.println("Please choose an option: \n(1)Add a task. \n(2)Remove a task. \n(3)Update a task. \n(4)List all tasks. \n(5)Delete tasks from file. \n(0)Exit.");
             String userChoice = input.nextLine();
 
             // starts loop to continue as long as user choice doesn't equal 0
@@ -36,7 +50,9 @@ public class Main {
                     updateTask(myTasks);
                 if (userChoice.equals("4"))
                     viewTasks(myTasks);
-                System.out.println("\nPlease choose an option: \n(1)Add a task. \n(2)Remove a task. \n(3)Update a task. \n(4)List all tasks. \n(0)Exit.");
+                if (userChoice.equals("5"))
+                    deserializeSimple(myTasks);
+                System.out.println("Please choose an option: \n(1)Add a task. \n(2)Remove a task. \n(3)Update a task. \n(4)List all tasks. \n(5)Delete tasks from file. \n(0)Exit.");
                 userChoice = input.nextLine();
             }
             //goodbye message :)
@@ -139,7 +155,6 @@ public class Main {
                 System.out.println("\nTask Number: " + i + a.get(i));
             }
         }
-
     }
 
     //if you want tasks sorted without displaying them,
@@ -153,6 +168,28 @@ public class Main {
         Collections.sort(a);
         for (int i = 0; i < a.size(); i++) {
             System.out.println(a.get(i));
+        }
+    }
+
+
+    //these two are broken because Gson will not import correctly
+    static void serializeSimple(ArrayList<Task> a){
+        Gson gson = new Gson();
+        try (FileWriter writer = new FileWriter("data.json")){
+            gson.toJson(a,writer);
+        } catch (IOException e) {e.printStackTrace();}
+    }
+
+    static void deserializeSimple(ArrayList<Task> a) {
+        try (FileReader reader = new FileReader("data.json")) {
+            JsonParser parser = new JsonParser();
+            JsonElement jsonElement = parser.parse(reader);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Task>>() {
+            }.getType();
+            ArrayList<Task> classList = new Gson().fromJson(jsonElement, listType);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
